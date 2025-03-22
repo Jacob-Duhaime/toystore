@@ -16,8 +16,17 @@
 
 	 		  Retrieve info about toy from the db using provided PDO connection
 	 */
+	function getInfo($pdo, $toynum) {
+		$sql = "SELECT toy.*, manuf.name AS manufacturer_name, manuf.Street, manuf.City, manuf.State, manuf.ZipCode, manuf.phone, manuf.contact 
+        	    FROM toy 
+            	JOIN manuf ON toy.manid = manuf.manid 
+        	    WHERE toy.toynum = :toynum";
 
+		$array = pdo($pdo, $sql, ['toynum' => $toynum])->fetch();
+		return $array;
+	}
 
+	$toybit = getInfo($pdo, $toy_id);
 // Closing PHP tag  ?> 
 
 <!DOCTYPE>
@@ -64,45 +73,45 @@
 			<div class="toy-details-container">
 				<div class="toy-image">
 					<!-- Display image of toy with its name as alt text -->
-					<img src="<?= '' ?>" alt="<?= '' ?>">
+					<img src="<?= $toybit['imgSrc'] ?>" alt="<?= '' ?>">
 				</div>
 
 				<div class="toy-details">
 
 					<!-- Display name of toy -->
-			        <h1><?= '' ?></h1>
+			        <h1><?= $toybit['name'] ?></h1>
 
 			        <hr />
 
 			        <h3>Toy Information</h3>
 
 			        <!-- Display description of toy -->
-			        <p><strong>Description:</strong> <?= '' ?></p>
+			        <p><strong>Description:</strong> <?= $toybit['description'] ?></p>
 
 			        <!-- Display price of toy -->
-			        <p><strong>Price:</strong> $ <?= '' ?></p>
+			        <p><strong>Price:</strong> $ <?= $toybit['price'] ?></p>
 
 			        <!-- Display age range of toy -->
-			        <p><strong>Age Range:</strong> <?= '' ?></p>
+			        <p><strong>Age Range:</strong> <?= $toybit['agerange'] ?></p>
 
 			        <!-- Display stock of toy -->
-			        <p><strong>Number In Stock:</strong> <?= '' ?></p>
+			        <p><strong>Number In Stock:</strong> <?= $toybit['numinstock'] ?></p>
 
 			        <br />
 
 			        <h3>Manufacturer Information</h3>
 
 			        <!-- Display name of manufacturer -->
-			        <p><strong>Name:</strong> <?= '' ?> </p>
+			        <p><strong>Name:</strong> <?= $toybit['manufacturer_name'] ?> </p>
 
 			        <!-- Display address of manufacturer -->
-			        <p><strong>Address:</strong> <?= '' ?></p>
+			        <p><strong>Address:</strong> <?= $toybit['Street'] ?>, <?= $toybit['City'] ?>, <?= $toybit['State'] ?>, <?= $toybit['ZipCode'] ?>.</p>
 
 			        <!-- Display phone of manufacturer -->
-			        <p><strong>Phone:</strong> <?= '' ?></p>
+			        <p><strong>Phone:</strong> <?= $toybit['phone'] ?></p>
 
 			        <!-- Display contact of manufacturer -->
-			        <p><strong>Contact:</strong> <?= '' ?></p>
+			        <p><strong>Contact:</strong> <?= $toybit['contact'] ?></p>
 			    </div>
 			</div>
 		</main>
